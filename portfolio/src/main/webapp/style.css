@@ -7,3 +7,12 @@
 #greeting-container {
   margin-top: 20px;
 }
+
+h1 {
+    text-align: center;
+    border-style: solid;
+}
+
+h2 {
+    text-align: center;
+}
