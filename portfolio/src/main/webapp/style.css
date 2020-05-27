@@ -16,3 +16,12 @@ h1 {
 h2 {
     text-align: center;
 }
+
+/*A class to center images*/
+.center {
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+    height: 30%;
+}
