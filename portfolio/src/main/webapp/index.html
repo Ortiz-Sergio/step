@@ -35,6 +35,8 @@ Started on Tuesday May 26, 2020-->
           Welcome to my portfolio! Scroll down to learn a little about myself!
       </p>
 
+      <!--**************************************************************************************************-->
+
       <h2 style="color:FloralWhite; background-color:red;">About Me:</h2>
       <p>Hello! My name is Sergio Ortiz. My passions include coding and playing videogames! I also like solving 
           twisty puzzles such as the Rubik's cube, with my average solve time with the 3x3 lying at slightly 
@@ -55,7 +57,43 @@ Started on Tuesday May 26, 2020-->
        Four years later, I am a STEP intern at Google!
       </p>
 
+      <!--**************************************************************************************************-->
 
+      <h2 style="color:FloralWhite; background-color:green;">Twisty Puzzles!</h2>
+      <p>
+          As I mentioned in the beginning of this webiste, one of my favorite hobbies is solving twisty puzzles!
+      </p>
+
+      <script>
+          var i = 0;
+          var images = [];
+          var time = 2000;
+
+          images[0] = '/images/american_flag.png';
+          images[1] = '/images/bandera_mexicana.png';
+          images[2] = '/images/cuphead_dab.jpg'
+
+          function slideshow() {
+              document.slide.src = images[i];
+              if (i < images.length - 1) {
+                  i++;
+              } else {
+                  i = 0;
+              }
+              setTimeout("slideshow()", time);
+          }
+
+          window.onload = slideshow;
+      </script>
+
+      <img name="slide" width="100%" height="100%">
+
+
+
+
+
+
+    <!--**************************************************************************************************-->
       
       <p>Click here to get a random fact about myself:</p>
       <button onclick="addRandomGreeting()">FACT</button>
