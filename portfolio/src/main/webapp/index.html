@@ -1,5 +1,4 @@
-<!--Sergio Ortiz's Portfolio
-Google STEP project
+<!--Sergio Ortiz's Portfolio Google STEP project
 Started on Tuesday May 26, 2020-->
 <!DOCTYPE html>
 <html>
@@ -15,9 +14,11 @@ Started on Tuesday May 26, 2020-->
     <div id="content">
       <h1>
 
-          <!--Images to the side of the heaer-->
-          <img src="/images/bandera_mexicana.png" alt ="Mexican Flag" width="19%" height="19%" align="left"/>
-          <img src="/images/american_flag.png" alt ="American Flag" width="20.5%" height="20.5%" align="right"/>
+          <!--Images to the side of the header-->
+          <img src="/images/flags/bandera_mexicana.png" alt ="Mexican Flag" 
+          width="19%" height="19%" align="left"/>
+          <img src="/images/flags/american_flag.png" alt ="American Flag" 
+          width="20.5%" height="20.5%" align="right"/>
 
           <span style="color:green;">Serg</span>
           <span style="color:white; -webkit-text-stroke: 1px black">io Or</span>
@@ -25,7 +26,7 @@ Started on Tuesday May 26, 2020-->
 
           <!--Link to github profile-->
           <p style="text-align:center; font-size: 10px">
-          GitHub: <a href="https://github.com/Ortiz-Sergio">Click to see my projects</a>
+          GitHub: <a href="https://github.com/Ortiz-Sergio">Click to see awesome projects</a>
       </p>
       </h1>
       
@@ -33,19 +34,161 @@ Started on Tuesday May 26, 2020-->
           Welcome to my portfolio! Scroll down to learn a little about myself!
       </p>
 
+      <!--**************************************************************************************************-->
+
       <h2 style="color:FloralWhite; background-color:red;">About Me:</h2>
       <p>Hello! My name is Sergio Ortiz. My passions include coding and playing videogames! I also like solving 
-          twisty puzzles such as the Rubik's cube, with my average solve time with the 3x3 lying at slightly 
+          twisty puzzles such as the Rubik's cube, with my average solve time on the 3x3 lying at slightly 
           under 35 seconds! My favorite language is Java, with Python coming in close second!
-
       </p>
 
       <p>
-      <!--Cuphead image -->
-      <img src="/images/cuphead_dab.jpg" alt ="Cuphead Dabbing" class="center" align="left"/>
-      I was born in February 11, 2001 in the border city of El Paso, Texas. 
+      <!--Image of me in my university -->
+      <img src="/images/me/20200528_112537.jpg" alt ="Me in front of the Engineering building" 
+      class="center" align="left" />
+       I was born in February 11, 2001 in the border city of El Paso, Texas. As a child, I was always 
+       gifted in Mathematics. One of my earliest memories of school is impressing my first grade teacher 
+       by doing division (pretty sure it was division by 2). During my early teenage years, I was in a bit 
+       of a slump in regards to my career choice. I knew engineering would probably utilize my strenghts 
+       the most, but I was unsure what branch to pursue. Then, as a sophmore in High School, I got the 
+       opportunity to take the introductory Computer Science course at my local community college. After the 
+       first week of this class, I was 90% sure I had finally found my career interest and thus, began the journey!
+       Four years later, I am a STEP intern at Google!
       </p>
-      
+
+      <!--**************************************************************************************************-->
+
+      <h2 style="color:FloralWhite; background-color:green;">Twisty Puzzles!</h2>
+      <p>
+          As I mentioned in the beginning of this webiste, one of my favorite hobbies is solving twisty puzzles!
+          Below is a slideshow of some of my favorite puzzles!
+      </p>
+
+      <div class="slideshow-container">
+          <div class="mySlides fade">
+              <img src="/images/puzzles/3x3_Megaminx.jpg" style="width:50%"
+              class="center">
+              <div class="text">My two favorite puzzles, the 3x3 and Megaminx</div>
+          </div>
+
+          <div class="mySlides fade">
+              <img src="/images/puzzles/2x2.png" style="width:50%"
+              class="center">
+              <div class="text">A smaller, different type of challenge</div>
+          </div>
+
+          <div class="mySlides fade">
+              <img src="/images/puzzles/5x5.png" style="width:50%"
+              class="center">
+              <div class="text">Some of the bigger puzzles</div>
+          </div>
+
+          <div class="mySlides fade">
+              <img src="/images/puzzles/void.png" style="width:50%"
+              class="center">
+              <div class="text">More unique looking puzzles</div>
+          </div>
+      </div>
+
+      <br>
+      <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span> 
+        <span class="dot" onclick="currentSlide(2)"></span> 
+        <span class="dot" onclick="currentSlide(3)"></span> 
+        <span class="dot" onclick="currentSlide(4)"></span> 
+      </div>
+
+      <script>
+          var slideIndex = 1;
+          showSlides(slideIndex);
+
+          function currentSlide(n) {
+              showSlides(slideIndex = n);
+          }
+
+          function showSlides(n) {
+              var i;
+              var slides = document.getElementsByClassName("mySlides");
+              var dots = document.getElementsByClassName("dot");
+
+              if (n > slides.length) {slideIndex = 1;}  
+              if (n < 1) {slideIndex = slides.length;} 
+
+              for (i = 0; i < slides.length; i++) {
+                  slides[i].style.display = "none"; 
+              }
+
+              for (i = 0; i < dots.length; i++) {
+                  dots[i].className = dots[i].className.replace(" active", "");
+              }
+
+              slides[slideIndex-1].style.display = "block"; 
+              dots[slideIndex-1].className += " active"; 
+          }
+      </script>
+
+    <!--**************************************************************************************************-->
+
+    <h2 style="color:FloralWhite; background-color:red;">My Favorite Videogames:</h2>
+    <p>Here are some of my favorite videogames. There's a lot but these are the ones 
+        I could think of when writing this!</p>
+
+    <img src="/images/videogames/botw.jpg" alt ="Breath of the Wild" 
+      class="center" align="left" />
+      <p>Easily my favorite videogame of all time is The Legend of Zelda Breath of the Wild.
+          This adventure was so massive and epic, it's honestly hard to forget. I have now
+          played this game twice, sinking in almost 500 hours into it! I could have easily 
+          spent that time on a sophisticated personal project.  </p>
+
+    <br>
+    <img src="/images/videogames/cuphead.png" alt ="Cuphead" display="block" margin-left="auto"
+    margin-right="auto" width="15%" height="15%" align="right" />
+      <p>Another personal favorite is Cuphead. This game was so challenging, but the feeling 
+          of personal accomplishment upon passing a level is unmatched. The artsyle of this game
+          is so unique and fun, with every character and animation hand-drawn to represent old 
+          cartoons. I cannot wait for the upcoming DLC! </p>
+
+    <br>
+    <img src="/images/videogames/super_mario3d.jpg" alt ="Super Mario 3D World" display="block" 
+    margin-left="auto" margin-right="auto" width="30%" height="30%" align="left" />
+    <img src="/images/videogames/dk1.jpeg" alt ="Donkey Kong Tropical Freeze" display="block" 
+    margin-left="auto" margin-right="auto" width="25%" height="25%" align="right" />
+        <p>These are some of my favorite platformers! Although Super Mario 3D World is not 
+            commonly liked by fans, it is my favorite 3D platformer simply because it was 
+            the first brand new game that I bought on release. Tropical Freeze is probably the
+            best 2D platformer. </p>
+
+     <!--**************************************************************************************************-->
+
+     <h2 style="color:FloralWhite; background-color:green;">
+         Terry Foundation:
+         <p style="text-align:center; font-size: 10px">
+         <a href="https://terryfoundation.org/">Click to learn more</a>
+         </p>
+     </h2>
+     
+     <figure>
+     <img src="/images/me/terries.jpg" alt ="UTEP Terry Scholars" width="350" height="200"
+     display="block" margin-left="auto" margin-right="auto"/>
+    <img src="/images/me/2019Terry.jpg" alt ="2019 UTEP Terry Scholars" width="200" height="200"/>
+     </figure>
+
+     <p>I am part of UTEP's Terry Scholar cohort, a group of talented scholars dedicated to 
+         giving back to the community. This year alone, we donated $500 to the UTEP Student 
+         Emergency Fund, commited over 470 hours of service to the community, donated over $1,000
+         to non-profits, among many other achievements. If interested in learning more, click on 
+         the above link. </p>
+
+      <hr>
+
+
+     <!--**************************************************************************************************-->
+
+      <!--Nooo you can't just use semantic markup for visual 
+      layout, that's what CSS is for.-->
+
+      <!--haha HTMl go--><br><br><br>
+
       <p>Click here to get a random fact about myself:</p>
       <button onclick="addRandomGreeting()">FACT</button>
       <div id="greeting-container"></div>
