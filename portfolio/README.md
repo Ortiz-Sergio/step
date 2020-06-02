@@ -5,4 +5,4 @@ In this directory you will find all the code for my [portfolio!](http://sergioor
 
 * Navigating to src/main/webapp will show all the front-end code (*June 2, 2020*)
 
-![alt text](../src/webapp/images/me/intern.jpg "Google Intern")
+<img src="src/main/webapp/images/me/intern.jpg">
