@@ -1,8 +1,8 @@
-This directory is where you'll write all of your code!
+Welcome to my portfolio!
+========================
 
-By default it contains a barebones web app. To run a local server, execute this
-command:
+In this directory you will find all the code for my [portfolio!](http://sergioortiz-step-2020.appspot.com/)
 
-```bash
-mvn package appengine:run
-```
+* Navigating to src/main/webapp will show all the front-end code (*June 2, 2020*)
+
+![alt text](../src/webapp/images/me/intern.jpg "Google Intern")
