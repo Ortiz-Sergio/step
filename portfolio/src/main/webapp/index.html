@@ -195,8 +195,19 @@ Started on Tuesday May 26, 2020-->
 
     <div id="content">
       <h2 style="color:FloralWhite; background-color:red;">Comments:</h2>
-      <p style="text-align:center">Click here to see some comments!</p>
-      <div style="border: 1px solid">
+      <p style="text-align:center">Thank you for your time! Feel free to leave a comment or click on the 
+          button at the bottom of the page to see some other comments!
+      </p>
+
+      <form action="/data" method="POST">
+      <p>Enter your comment: </p>
+      <textarea name="comment-input">New Comment</textarea>
+      <br/><br/>  
+      <input type="submit" />
+      <br/><br/>
+      </form>
+
+    <div style="border: 1px solid">
       <button onclick="getServerComments()">Comments</button>
       </div>
       <ul id="comments-container"></ul>
