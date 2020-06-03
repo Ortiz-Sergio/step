@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-    ArrayList<String> commentList = new ArrayList<String>();
+    private ArrayList<String> commentList = new ArrayList<String>();
     commentList.add("Awesome Website!");
     commentList.add("Great job! Keep it up!");
     commentList.add("Very interesting!!");
