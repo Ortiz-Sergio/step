@@ -56,12 +56,6 @@ public class DataServlet extends HttpServlet {
     return value;
   }
 
-  private void initializeComments() {
-    commentList.add("Awesome Website!");
-    commentList.add("Great job! Keep it up!");
-    commentList.add("Very interesting!!");
-  }
-
   /**
    * Converts a ServerStats instance into a JSON string using the Gson library.
    */
