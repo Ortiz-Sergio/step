@@ -28,8 +28,26 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-function getRandomNameUsingArrowFunctions() {
-  fetch('/data').then(response => response.text()).then((name) => {
-    document.getElementById('name-container').innerText = name;
-  });
+
+
+function getServerStats() {
+    fetch('/data')
+    .then(response => response.json())
+    .then((myObject) => {
+        const commentsListElement = document.getElementById('comments-container');
+        commentsListElement.innerHTML = '';
+        for(x in myObject) {
+            console.log(myObject[x]);
+            commentsListElement.appendChild(
+                createListElement('Comment: ' + myObject[x]));
+        }
+    });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  console.log(liElement);
+  return liElement;
 }
