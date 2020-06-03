@@ -46,8 +46,7 @@ public class DataServlet extends HttpServlet {
   }
 
   /**
-   * Converts a ServerStats instance into a JSON string using the Gson library. Note: We first added
-   * the Gson library dependency to pom.xml.
+   * Converts a ServerStats instance into a JSON string using the Gson library.
    */
   private String convertToJsonUsingGson(List<String> comments) {
     String json = gson.toJson(comments);
