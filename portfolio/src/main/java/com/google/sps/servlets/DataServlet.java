@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
     private List<String> commentList = new ArrayList<>();
+    private Gson gson = new Gson();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -49,7 +50,6 @@ public class DataServlet extends HttpServlet {
    * the Gson library dependency to pom.xml.
    */
   private String convertToJsonUsingGson(List<String> comments) {
-    Gson gson = new Gson();
     String json = gson.toJson(comments);
     return json;
   }
