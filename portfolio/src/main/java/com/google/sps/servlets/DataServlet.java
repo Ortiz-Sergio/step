@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
 import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
     private List<String> commentList = new ArrayList<>();
+    private Entity commentEntity = new Entity("Comment");
     private Gson gson = new Gson();
 
   @Override
@@ -42,7 +46,13 @@ public class DataServlet extends HttpServlet {
       String comment = getParameter(request, "comment-input", "");
       if(isValid(comment)) {
           commentList.add(comment);
+          commentEntity.setProperty("comment", comment);
+
+          DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+          datastore.put(commentEntity);
       }
+      
+
       response.sendRedirect("/index.html");
   }
 
