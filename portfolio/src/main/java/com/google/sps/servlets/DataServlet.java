@@ -40,7 +40,9 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String comment = getParameter(request, "comment-input", "");
-      commentList.add(comment);
+      if(isValid(comment)) {
+          commentList.add(comment);
+      }
       response.sendRedirect("/index.html");
   }
 
@@ -63,4 +65,20 @@ public class DataServlet extends HttpServlet {
     String json = gson.toJson(comments);
     return json;
   }
+
+  /**
+   * Checks if the user's comment is not empty or the placeholder text
+   */
+  public boolean isValid(String comment) {
+      if (comment.isEmpty()) {
+          return false;
+      }
+      if (comment.isBlank()) {
+          return false;
+      }
+      if (comment.equalsIgnoreCase("New Comment")) {
+          return false;
+      }
+      return true;  
+   }
 }
