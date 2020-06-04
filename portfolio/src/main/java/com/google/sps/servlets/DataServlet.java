@@ -80,15 +80,6 @@ public class DataServlet extends HttpServlet {
    * Checks if the user's comment is not empty or the placeholder text
    */
   public boolean isValid(String comment) {
-      if (comment.isEmpty()) {
-          return false;
-      }
-      if (comment.isBlank()) {
-          return false;
-      }
-      if (comment.equalsIgnoreCase("New Comment")) {
-          return false;
-      }
-      return true;  
+      return !comment.isEmpty() && !comment.isBlank() && !comment.equalsIgnoreCase("New Comment");
    }
 }
