@@ -31,14 +31,12 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
     private List<String> commentList = new ArrayList<>();
-    private Entity commentEntity = new Entity("Comment");
     private Gson gson = new Gson();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = convertToJsonUsingGson(commentList);
     response.setContentType("application/json;");
-    response.getWriter().println(json);
+    response.getWriter().println(gson.toJson(commentList));
   }
 
   @Override
@@ -46,6 +44,7 @@ public class DataServlet extends HttpServlet {
       String comment = getParameter(request, "comment-input", "");
       if(isValid(comment)) {
           commentList.add(comment);
+          Entity commentEntity = new Entity("Comment");
           commentEntity.setProperty("comment", comment);
 
           DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

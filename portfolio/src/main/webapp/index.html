@@ -199,11 +199,22 @@ Started on Tuesday May 26, 2020-->
           button at the bottom of the page to see some other comments!
       </p>
 
-      <form action="/data" method="POST">
+      <script>
+      function validateForm() {
+          var comment = document.forms["commentSection"]["comment-input"].value;
+          var areEqual = comment.toUpperCase() === "NEW COMMENT";
+          if (areEqual || !comment.replace(/\s/g, '').length) {
+              alert("Not a valid comment, try again");
+              return false;
+          }
+      }
+      </script>
+
+      <form name="commentSection" action="/data" method="POST" onsubmit="return validateForm()">
       <p>Enter your comment: </p>
       <textarea name="comment-input">New Comment</textarea>
       <br/><br/>  
-      <input type="submit" />
+      <input type="submit"/>
       <br/><br/>
       </form>
 
