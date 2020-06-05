@@ -16,15 +16,13 @@
  * Fetches comments from the servers and adds them to the DOM.
  */
 function getServerComments() {
-    fetch('/data')
-    .then(response => response.json())
-    .then((myObject) => {
+    fetch('/data').then(response => response.json()).then((myObject) => {
         const commentsListElement = document.getElementById('comments-container');
         commentsListElement.innerHTML = '';
         for(x in myObject) {
             console.log(myObject[x]);
             commentsListElement.appendChild(
-                createListElement('Comment: ' + myObject[x]));
+                createListElement('Comment: ' + myObject[x].comment));
         }
     });
 }
