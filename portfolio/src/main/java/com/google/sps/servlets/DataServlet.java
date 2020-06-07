@@ -17,6 +17,7 @@ package com.google.sps.servlets;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
+import java.io.*;
 import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -38,18 +39,20 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
       Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
       PreparedQuery userComments = datastore.prepare(query);
 
       List<Comment> commentList = new ArrayList<>();
       for (Entity entity : userComments.asIterable()) {
-          long id = entity.getKey().getId();
-          String newComment = (String) entity.getProperty("comment");
-          long timestamp = (long) entity.getProperty("timestamp");
+        long id = entity.getKey().getId();
+        String newComment = (String) entity.getProperty("comment");
+        long timestamp = (long) entity.getProperty("timestamp");
 
-          Comment commentObject = new Comment(id, newComment, timestamp);
-          commentList.add(commentObject);
+        Comment commentObject = new Comment(id, newComment, timestamp);
+        commentList.add(commentObject);
+          }
       }
 
       response.setContentType("application/json;");

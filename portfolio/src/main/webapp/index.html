@@ -202,10 +202,12 @@ Started on Tuesday May 26, 2020-->
       <script>
       function validateForm() {
           var comment = document.forms["commentSection"]["comment-input"].value;
-          var isBlank = comment.toUpperCase() === "NEW COMMENT";
-          if (isBlank || !comment.replace(/\s/g, '').length) {
-              alert("Not a valid comment, try again");
-              return false;
+          if (comment.isNaN()) {
+            var isBlank = comment.toUpperCase() === "NEW COMMENT";
+            if (isBlank || !comment.replace(/\s/g, '').length) {
+                alert("Not a valid comment, try again");
+                return false;
+            }
           }
       }
       </script>

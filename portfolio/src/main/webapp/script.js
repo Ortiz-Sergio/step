@@ -20,7 +20,6 @@ function getServerComments() {
         const commentsListElement = document.getElementById('comments-container');
         commentsListElement.innerHTML = '';
         for(x in myObject) {
-            console.log(myObject[x]);
             commentsListElement.appendChild(
                 createListElement('Comment: ' + myObject[x].comment));
         }
