@@ -195,33 +195,38 @@ Started on Tuesday May 26, 2020-->
 
     <div id="content">
       <h2 style="color:FloralWhite; background-color:red;">Comments:</h2>
-      <p style="text-align:center">Thank you for your time! Feel free to leave a comment or click on the 
-          button at the bottom of the page to see some other comments!
+      <p>Thank you for your time! Feel free to leave a comment or keep scrolling down
+          to see some other comments. Thank You! 
       </p>
 
       <script>
       function validateForm() {
           var comment = document.forms["commentSection"]["comment-input"].value;
-          if (comment.isNaN()) {
-            var isBlank = comment.toUpperCase() === "NEW COMMENT";
-            if (isBlank || !comment.replace(/\s/g, '').length) {
-                alert("Not a valid comment, try again");
-                return false;
-            }
+          if (!comment.replace(/\s/g, '').length) {
+            alert("Not a valid comment, try again");
+            return false;
+          }
+          comment = comment.trim();
+          var isEmpty = comment.toUpperCase() === "NEW COMMENT";
+          if (isEmpty) {
+              alert("Not a valid comment, try again");
+              return false;
           }
       }
       </script>
 
       <form name="commentSection" action="/data" method="POST" onsubmit="return validateForm()">
-      <p>Enter your comment: </p>
-      <textarea name="comment-input">New Comment</textarea>
-      <br/><br/>  
+      <p style="text-align:center">Enter your comment:
+      <textarea style="display: block; margin-left: auto; margin-right: auto" name="comment-input">     New Comment
+      </textarea>  
+      <br>
       <input type="submit"/>
+      </p>
       <br/><br/>
       </form>
 
       <div style="border: 1px solid">
-      <button onclick="getServerComments()">Comments</button>
+      <body onload="getServerComments()">
       </div>
       <ul id="comments-container"></ul>
       <br>
