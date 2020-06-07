@@ -21,7 +21,7 @@ function getServerComments() {
         commentsListElement.innerHTML = '';
         for(x in myObject) {
             commentsListElement.appendChild(
-                createListElement('Comment: ' + myObject[x].comment));
+                createListElement(myObject[x].date+" - "+myObject[x].comment));
         }
     });
 }
