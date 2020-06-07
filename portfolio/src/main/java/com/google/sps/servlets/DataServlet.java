@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import java.text.SimpleDateFormat; 
+import java.util.Date;  
 import java.util.List;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -47,8 +49,9 @@ public class DataServlet extends HttpServlet {
         long id = entity.getKey().getId();
         String newComment = (String) entity.getProperty("comment");
         long timestamp = (long) entity.getProperty("timestamp");
+        Date date = (Date) entity.getProperty("date");
 
-        Comment commentObject = new Comment(id, newComment, timestamp);
+        Comment commentObject = new Comment(id, newComment, timestamp, date);
         commentList.add(commentObject);
       }
 
@@ -60,10 +63,13 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String comment = getParameter(request, "comment-input", "");
       long timestamp = System.currentTimeMillis();
+      SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+      Date date = new Date();  
       if(isValid(comment)) {
           Entity commentEntity = new Entity("Comment");
           commentEntity.setProperty("comment", comment);
           commentEntity.setProperty("timestamp", timestamp);
+          commentEntity.setProperty("date", date);
 
           datastore.put(commentEntity);
       }

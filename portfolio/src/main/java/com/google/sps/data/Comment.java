@@ -14,16 +14,21 @@
 
 package com.google.sps.data;
 
+import java.text.SimpleDateFormat; 
+import java.util.Date; 
+
 /** An item on a comment list. */
 public final class Comment {
 
   private final long id;
   private final String comment;
   private final long timestamp;
+  private final Date date;
 
-  public Comment(long id, String comment, long timestamp) {
+  public Comment(long id, String comment, long timestamp, Date date) {
     this.id = id;
     this.comment = comment;
     this.timestamp = timestamp;
+    this.date = date;
   }
 }
