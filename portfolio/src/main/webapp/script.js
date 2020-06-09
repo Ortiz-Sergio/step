@@ -32,6 +32,7 @@ function getComments() {
             getServerComments();
         } else {
             console.log("Not signed in");
+            location.href= '/login';
         }
     });
 }
