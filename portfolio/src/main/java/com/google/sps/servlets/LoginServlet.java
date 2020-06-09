@@ -39,7 +39,9 @@ public class LoginServlet extends HttpServlet {
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail();
       String urlToRedirectToAfterUserLogsOut = "/login";
+      String urlToGoBackHome = "/index.html";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
+      String homeUrl = userService.createLogoutURL(urlToGoBackHome);
       try {
         sendStatus(request, "true");
       } catch (Exception e) {
@@ -48,6 +50,7 @@ public class LoginServlet extends HttpServlet {
 
       response.getWriter().println("<p>Hello " + userEmail + "!</p>");
       response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
+      response.getWriter().println("<p>Click <a href=\"" + homeUrl + "\">here</a> to go home.</p>");
     } else {
       String urlToRedirectToAfterUserLogsIn = "/login";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
@@ -57,7 +60,7 @@ public class LoginServlet extends HttpServlet {
           System.err.println("Error, "+ e);
       }
       
-      response.getWriter().println("<p>Hello stranger.</p>");
+      response.getWriter().println("<p>It seems you are not logged in. Please Log In Below</p>");
       response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
     }
   }
