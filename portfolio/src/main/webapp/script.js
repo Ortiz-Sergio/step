@@ -20,8 +20,18 @@ function getServerComments() {
         const commentsListElement = document.getElementById('comments-container');
         commentsListElement.innerHTML = '';
         for(x in myObject) {
-            commentsListElement.appendChild(
+                commentsListElement.appendChild(
                 createListElement(myObject[x].date+" - "+myObject[x].comment));
+        }
+    });
+}
+
+function getComments() {
+    fetch('/loginstatus').then(response => response.json()).then((myObject) => {
+        if (myObject == "true") {
+            getServerComments();
+        } else {
+            console.log("Not signed in");
         }
     });
 }
