@@ -218,7 +218,8 @@ Started on Tuesday May 26, 2020-->
       <form name="commentSection" action="/data" method="POST" onsubmit="return validateForm()">
       <p style="text-align:center">Enter your comment:
       <textarea style="display: block; margin-left: auto; margin-right: auto" name="comment-input">     New Comment
-      </textarea>  
+      </textarea>
+        
       <br>
       <input type="submit"/>
       </p>
@@ -226,7 +227,7 @@ Started on Tuesday May 26, 2020-->
       </form>
 
       <div style="border: 1px solid">
-      <body onload="getServerComments()">
+      <body onload="getComments()">
       </div>
       <ul id="comments-container"></ul>
       <br>
