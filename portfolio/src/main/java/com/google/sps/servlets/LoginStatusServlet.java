@@ -36,6 +36,7 @@ public class LoginStatusServlet extends HttpServlet {
 
     HttpSession session = request.getSession();
     String isLoggedIn = (String) session.getAttribute("isLoggedIn");
+
     response.setContentType("application/json;");
 
     response.getWriter().println(gson.toJson(isLoggedIn));

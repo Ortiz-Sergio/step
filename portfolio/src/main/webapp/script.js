@@ -28,6 +28,7 @@ function getServerComments() {
 
 function getComments() {
     fetch('/loginstatus').then(response => response.json()).then((myObject) => {
+        console.log(myObject);
         if (myObject == "true") {
             getServerComments();
         } else {

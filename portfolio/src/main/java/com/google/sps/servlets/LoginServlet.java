@@ -42,23 +42,17 @@ public class LoginServlet extends HttpServlet {
       String urlToGoBackHome = "/index.html";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
       String homeUrl = userService.createLogoutURL(urlToGoBackHome);
-      try {
-        sendStatus(request, "true");
-      } catch (Exception e) {
-          System.err.println("Error, "+ e);
-      }
-
+    
+      sendStatus(request, "true");
+      
       response.getWriter().println("<p>Hello " + userEmail + "!</p>");
       response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
       response.getWriter().println("<p>Click <a href=\"" + homeUrl + "\">here</a> to go home.</p>");
     } else {
       String urlToRedirectToAfterUserLogsIn = "/login";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
-      try {
-        sendStatus(request, "false");
-      } catch (Exception e) {
-          System.err.println("Error, "+ e);
-      }
+    
+      sendStatus(request, "false");
       
       response.getWriter().println("<p>It seems you are not logged in. Please Log In Below</p>");
       response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
@@ -68,7 +62,7 @@ public class LoginServlet extends HttpServlet {
   /*
    * Sends the login status of the user to the LoginStatusServlet 
    */
-  private void sendStatus(HttpServletRequest request, String login) throws Exception {
+  private void sendStatus(HttpServletRequest request, String login) {
       HttpSession session = request.getSession();
       session.setAttribute("isLoggedIn", login);
   }
