@@ -41,11 +41,20 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
       Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+      
+      int numComments = getNumComments(request);
+      System.err.println("We got "+numComments+" back from the function");
+
+      int currentComments = 0;
+      if (numComments == -1) {
+          numComments = 10;
+      }
 
       PreparedQuery userComments = datastore.prepare(query);
 
       List<Comment> commentList = new ArrayList<>();
       for (Entity entity : userComments.asIterable()) {
+        System.err.println("Showing comment number "+currentComments);
         long id = entity.getKey().getId();
         String newComment = (String) entity.getProperty("comment");
         long timestamp = (long) entity.getProperty("timestamp");
@@ -53,6 +62,10 @@ public class DataServlet extends HttpServlet {
 
         Comment commentObject = new Comment(id, newComment, timestamp, date);
         commentList.add(commentObject);
+        currentComments++;
+        if(currentComments == numComments){
+            break;
+        }
       }
 
       response.setContentType("application/json;");
@@ -95,4 +108,23 @@ public class DataServlet extends HttpServlet {
   public boolean isValid(String comment) {
       return !comment.isEmpty() && !comment.isBlank() && !comment.equalsIgnoreCase("New Comment");
    }
+
+   public int getNumComments(HttpServletRequest request) {
+    String numberInputStr = (String) request.getParameter("num-comments");
+    int numberInputInt;
+    try {
+        numberInputInt = Integer.parseInt(numberInputStr);
+    } catch (NumberFormatException e) {
+        System.err.println("Could not convert to int: " + numberInputStr);
+        return -1;
+    }
+    if (numberInputInt <= 0) {
+        System.err.println("User entered a negative number");
+        return -1;
+    }
+    System.err.println("Sending "+numberInputInt+" back to the user");
+    return numberInputInt;
+  }
 }
+
+
