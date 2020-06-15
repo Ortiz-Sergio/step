@@ -19,10 +19,17 @@ package com.google.sps;
  */
 public class Greeter {
   /**
-   * Returns a greeting for the given name.
+   * Returns a greeting for the given name. 
+   * @param name The name of the user
+   * @return Hello <name>, will trim whitespace and non letters, 
+   * will just return hello is name empty or null
    */
   public String greet(String name) {
+    if (name == null)
+        return "Hello";
     name = name.trim();
+    if (name.isEmpty())
+        return "Hello";
     String newName = "";
     for (int i = 0; i < name.length(); i++) {
         if (Character.isLetter(name.charAt(i)))
