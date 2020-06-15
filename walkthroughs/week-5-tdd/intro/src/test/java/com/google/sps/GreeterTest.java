@@ -23,6 +23,7 @@ import org.junit.runners.JUnit4;
 public final class GreeterTest {
 
   @Test
+  /*Checks if the greeting returns Hello <name>*/
   public void testGreeting() {
     Greeter greeter = new Greeter();
 
@@ -32,6 +33,7 @@ public final class GreeterTest {
   }
 
   @Test
+  /*Checks if the greeting trims any whitespace off <name>*/
   public void testGreetingTrimsWhitespace() {
       Greeter greeter = new Greeter();
 
@@ -42,6 +44,7 @@ public final class GreeterTest {
   }
 
   @Test
+  /*Checks if the greeting removes any extra symbols from <name>*/
   public void testGreetingWithSymbols() {
       Greeter greeter = new Greeter();
 
@@ -49,5 +52,17 @@ public final class GreeterTest {
 
       //Extra symbols should be removed
       Assert.assertEquals("Hello Ada", greeting);
+  }
+
+  @Test 
+  /*Checks if the greeting properly handles nulls and empties*/
+  public void testGreetingNull() {
+      Greeter greeter = new Greeter();
+
+      String greeting = greeter.greet("");
+      String greeting1 = greeter.greet(null);
+
+      Assert.assertEquals("Hello", greeting);
+      Assert.assertEquals("Hello", greeting1);
   }
 }
