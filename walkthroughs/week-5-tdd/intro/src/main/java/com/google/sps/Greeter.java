@@ -24,7 +24,7 @@ public class Greeter {
    * @return Hello <name>, will trim whitespace and non letters, 
    * will just return hello is name empty or null
    */
-  public String greet(String name) {
+  public static String greet(String name) {
     if (name == null)
         return "Hello";
     name = name.trim();
