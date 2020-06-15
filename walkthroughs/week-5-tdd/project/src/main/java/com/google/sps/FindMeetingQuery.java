@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     
-    if (events.isEmptyOrNull()) {
+    if (events.isEmpty() || events == null) {
         return Arrays.asList(TimeRange.WHOLE_DAY);
     }
 
