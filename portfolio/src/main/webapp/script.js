@@ -47,3 +47,9 @@ function createListElement(text) {
   console.log(liElement);
   return liElement;
 }
+
+function createMap() {
+  const map = new google.maps.Map(
+      document.getElementById('map'),
+      {center: {lat: 31.592, lng: -106.224}, zoom: 12});
+}
