@@ -15,11 +15,13 @@
 package com.google.sps;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    //throw new UnsupportedOperationException("TODO: Implement this method.");
+    
     if (events.isEmpty()) {
         return Arrays.asList(TimeRange.WHOLE_DAY);
     }
@@ -27,6 +29,25 @@ public final class FindMeetingQuery {
     if (request.getDuration() > (long)TimeRange.WHOLE_DAY.duration()) {
         return Arrays.asList();
     }
-    return null;
+
+    TimeRange earliestTime = TimeRange.fromStartEnd(1440, 1440, false);
+    TimeRange latestTime = TimeRange.fromStartEnd(0, 0, false);
+    TimeRange useToCompare = TimeRange.fromStartEnd(69, 420, false);
+
+    for(Event event : events) {
+        if (useToCompare.ORDER_BY_START.compare(event.getWhen(), earliestTime) < 0)
+            earliestTime = event.getWhen();
+        if (useToCompare.ORDER_BY_START.compare(event.getWhen(), latestTime) > 0)
+            latestTime = event.getWhen();
+    }
+
+    System.err.println("Earliest Time is from "+earliestTime.start()+" to "+
+    earliestTime.end());
+    System.err.println("Latest Time is from "+latestTime.start()+" to "+
+    earliestTime.end());
+    
+
+    return Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, earliestTime.start(), false),
+    TimeRange.fromStartEnd(latestTime.end(), TimeRange.END_OF_DAY, true));
   }
 }
