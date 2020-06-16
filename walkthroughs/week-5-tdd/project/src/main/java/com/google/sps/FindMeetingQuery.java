@@ -115,7 +115,7 @@ public final class FindMeetingQuery {
           another time we have*/
           if (currentTime.overlaps(newTime)) {
               TimeRange newEnd = (currentTime.ORDER_BY_END.compare(currentTime, newTime) > 0) ? currentTime : newTime;
-              TimeRange newStart = (currentTime.ORDER_BY_START.compare(newTime, currentTime) < 0) ? currentTime : newTime;
+              TimeRange newStart = (currentTime.ORDER_BY_START.compare(newTime, currentTime) > 0) ? currentTime : newTime;
               TimeRange combinedTime = TimeRange.fromStartEnd(newStart.start(), newEnd.end(), false);
               times.add(combinedTime);
               times.remove(currentTime);
