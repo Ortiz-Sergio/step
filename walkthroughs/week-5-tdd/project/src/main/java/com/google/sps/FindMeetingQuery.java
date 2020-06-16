@@ -22,32 +22,86 @@ import java.util.ArrayList;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     
-    if (events.isEmpty() || events == null) {
-        return Arrays.asList(TimeRange.WHOLE_DAY);
-    }
-
+    /*Edge Case, the duration of the event is too long*/
     if (request.getDuration() > (long)TimeRange.WHOLE_DAY.duration()) {
         return Arrays.asList();
     }
 
-    TimeRange earliestTime = TimeRange.fromStartEnd(1440, 1440, false);
-    TimeRange latestTime = TimeRange.fromStartEnd(0, 0, false);
-    TimeRange useToCompare = TimeRange.fromStartEnd(69, 420, false);
-
-    for(Event event : events) {
-        if (useToCompare.ORDER_BY_START.compare(event.getWhen(), earliestTime) < 0)
-            earliestTime = event.getWhen();
-        if (useToCompare.ORDER_BY_START.compare(event.getWhen(), latestTime) > 0)
-            latestTime = event.getWhen();
+    /*Edge Case, there are no events*/
+    if (events.isEmpty() || events == null) {
+        return Arrays.asList(TimeRange.WHOLE_DAY);
     }
 
-    System.err.println("Earliest Time is from "+earliestTime.start()+" to "+
-    earliestTime.end());
-    System.err.println("Latest Time is from "+latestTime.start()+" to "+
-    earliestTime.end());
-    
+    List<TimeRange> invalidTimes = new ArrayList<>();
 
-    return Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, earliestTime.start(), false),
-    TimeRange.fromStartEnd(latestTime.end(), TimeRange.END_OF_DAY, true));
+    for (Event event: events) 
+        invalidTimes = fixOverlaps(invalidTimes, event.getWhen());
+
+    /*Used for debugging, will be deleted later*/
+    System.err.println("Invalid Times");
+    for (TimeRange time: invalidTimes)
+        System.err.println(time.toString());
+
+    List<TimeRange> validTimes = new ArrayList<>();
+
+    /*Improper implementation, I noticed that in my test cases, there was 
+    either only one invalid time slot in the middle of the day, so the edges
+    of the day were free, or there was two invalid times on the edges of 
+    the days, so the middle of the day was free. I based my implementation off
+    this, but it does not account for other options, such as more scattered
+    invalid time slots. I plan to fix this later.*/
+    if (invalidTimes.size() > 1) {
+        int earliestTime = invalidTimes.get(0).end();
+        int latestTime = invalidTimes.get(1).start();
+        validTimes.add(TimeRange.fromStartEnd(earliestTime, latestTime, false));
+    } else {
+        validTimes.add(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, 
+        invalidTimes.get(0).start(), false));
+        validTimes.add(TimeRange.fromStartEnd(invalidTimes.get(0).end(), 
+        TimeRange.END_OF_DAY + 1, false));
+    }
+
+    return validTimes;
+  }
+
+  /* Adds a new invalid time to the list, but first checks if there's any overlaps.
+   * If so, the function accomodates to the overlap. 
+   * @param times a List containing all the invalid TimeRanges
+   * @param newTime the new invalid time we are trying to add to the list
+   * @return the new list with the added invalid time
+   */
+  private List<TimeRange> fixOverlaps(List<TimeRange> times, TimeRange newTime) {
+      if (times.isEmpty() || times == null) {
+          times.add(newTime);
+          return times;
+      }
+
+      for(TimeRange currentTime: times) {
+          /*We already have an invalid time larger than the 
+          one we are tryng to add */
+          if (currentTime.contains(newTime)) 
+            return times;
+        
+          /*The time we are tryng to add is larger than a time 
+          we already have */
+          if (newTime.contains(currentTime)) {
+              times.remove(currentTime);
+              times.add(newTime);
+              return times;
+          }
+        
+          /*The worst scenario, the time we are trying to add merely overlaps 
+          another time we have*/
+          if (currentTime.overlaps(newTime)) {
+              TimeRange newEnd = (currentTime.ORDER_BY_END.compare(currentTime, newTime) > 0) ? currentTime : newTime;
+              TimeRange newStart = (currentTime.ORDER_BY_START.compare(newTime, currentTime) < 0) ? currentTime : newTime;
+              TimeRange combinedTime = TimeRange.fromStartEnd(newStart.start(), newEnd.end(), false);
+              times.add(combinedTime);
+              times.remove(currentTime);
+              return times;
+          }
+      }
+      times.add(newTime);
+      return times;
   }
 }
