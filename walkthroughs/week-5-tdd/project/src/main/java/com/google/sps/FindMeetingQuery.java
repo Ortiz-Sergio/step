@@ -33,16 +33,11 @@ public final class FindMeetingQuery {
     }
 
     List<TimeRange> invalidTimes = new ArrayList<>();
+    List<TimeRange> validTimes = new ArrayList<>();
+    TimeRange proposedTime;
 
     for (Event event: events) 
         invalidTimes = fixOverlaps(invalidTimes, event.getWhen());
-
-    /*Used for debugging, will be deleted later*/
-    System.err.println("Invalid Times");
-    for (TimeRange time: invalidTimes)
-        System.err.println(time.toString());
-
-    List<TimeRange> validTimes = new ArrayList<>();
 
     /*Proper implementation, goes from time slot to time slot, 
     adding them to the list as we go. Does not make any assumptions 
@@ -54,18 +49,28 @@ public final class FindMeetingQuery {
         if (currentStamp == currentTime.start())
             currentStamp = currentTime.end();
         else {
-            validTimes.add(TimeRange.fromStartEnd(currentStamp, 
-            currentTime.start(), false));
+            proposedTime = TimeRange.fromStartEnd(currentStamp, 
+            currentTime.start(), false);
+
+            /*Checks if the proposed time slot is big enough to fit 
+            the event request time*/
+            if (proposedTime.duration() >= request.getDuration())
+                validTimes.add(proposedTime);
+
             currentStamp = currentTime.end();
         }
         if (currentStamp == TimeRange.END_OF_DAY + 1)
             break;
     }
+
     /*If we havent reached the end of the day, then we have a whole
     free slot at the end */
     if (currentStamp != TimeRange.END_OF_DAY) {
-        validTimes.add(TimeRange.fromStartEnd(currentStamp, 
-        TimeRange.END_OF_DAY + 1, false));
+        proposedTime = TimeRange.fromStartEnd(currentStamp, 
+        TimeRange.END_OF_DAY + 1, false);
+        
+        if (proposedTime.duration() >= request.getDuration())
+            validTimes.add(proposedTime);
     }
 
     return validTimes;
