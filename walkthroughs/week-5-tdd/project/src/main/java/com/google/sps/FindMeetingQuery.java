@@ -44,20 +44,27 @@ public final class FindMeetingQuery {
 
     List<TimeRange> validTimes = new ArrayList<>();
 
-    /*Improper implementation, I noticed that in my test cases, there was 
-    either only one invalid time slot in the middle of the day, so the edges
-    of the day were free, or there was two invalid times on the edges of 
-    the days, so the middle of the day was free. I based my implementation off
-    this, but it does not account for other options, such as more scattered
-    invalid time slots. I plan to fix this later.*/
-    if (invalidTimes.size() > 1) {
-        int earliestTime = invalidTimes.get(0).end();
-        int latestTime = invalidTimes.get(1).start();
-        validTimes.add(TimeRange.fromStartEnd(earliestTime, latestTime, false));
-    } else {
-        validTimes.add(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, 
-        invalidTimes.get(0).start(), false));
-        validTimes.add(TimeRange.fromStartEnd(invalidTimes.get(0).end(), 
+    /*Proper implementation, goes from time slot to time slot, 
+    adding them to the list as we go. Does not make any assumptions 
+    about where the invalid time slots are, aside from them being sorted*/
+    int currentStamp = TimeRange.START_OF_DAY;
+
+    for (TimeRange currentTime: invalidTimes) {
+        //If the beginning of the day is an invalid time slot 
+        if (currentStamp == currentTime.start())
+            currentStamp = currentTime.end();
+        else {
+            validTimes.add(TimeRange.fromStartEnd(currentStamp, 
+            currentTime.start(), false));
+            currentStamp = currentTime.end();
+        }
+        if (currentStamp == TimeRange.END_OF_DAY + 1)
+            break;
+    }
+    /*If we havent reached the end of the day, then we have a whole
+    free slot at the end */
+    if (currentStamp != TimeRange.END_OF_DAY) {
+        validTimes.add(TimeRange.fromStartEnd(currentStamp, 
         TimeRange.END_OF_DAY + 1, false));
     }
 
