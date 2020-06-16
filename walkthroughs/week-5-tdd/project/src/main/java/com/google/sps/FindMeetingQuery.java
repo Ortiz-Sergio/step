@@ -36,8 +36,17 @@ public final class FindMeetingQuery {
     List<TimeRange> validTimes = new ArrayList<>();
     TimeRange proposedTime;
 
-    for (Event event: events) 
-        invalidTimes = fixOverlaps(invalidTimes, event.getWhen());
+    for (Event event: events) {
+        /*If no one from the event is going, then none of the times 
+        disrupt us */
+        if(checkAttendance(event, request))
+            invalidTimes = fixOverlaps(invalidTimes, event.getWhen());
+    }
+    
+    if (invalidTimes.isEmpty() || invalidTimes == null){
+        validTimes.add(TimeRange.WHOLE_DAY);
+        return validTimes;
+    }
 
     /*Proper implementation, goes from time slot to time slot, 
     adding them to the list as we go. Does not make any assumptions 
@@ -68,7 +77,7 @@ public final class FindMeetingQuery {
     if (currentStamp != TimeRange.END_OF_DAY) {
         proposedTime = TimeRange.fromStartEnd(currentStamp, 
         TimeRange.END_OF_DAY + 1, false);
-        
+
         if (proposedTime.duration() >= request.getDuration())
             validTimes.add(proposedTime);
     }
@@ -115,5 +124,19 @@ public final class FindMeetingQuery {
       }
       times.add(newTime);
       return times;
+  }
+
+  /*Checks if at least one person is attending
+   * @param event the event that could potentially disrupt the meeting time
+   * @param request the meeting request
+   * @return true if at least one person from the event is going to the meeting
+   * false otherwise
+   */
+  private Boolean checkAttendance(Event event, MeetingRequest request) {
+      for (String person : event.getAttendees()) {
+          if (request.getAttendees().contains(person))
+            return true;
+      }
+      return false;
   }
 }
