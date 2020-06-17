@@ -22,32 +22,121 @@ import java.util.ArrayList;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     
-    if (events.isEmpty() || events == null) {
-        return Arrays.asList(TimeRange.WHOLE_DAY);
-    }
-
+    /*Edge Case, the duration of the event is too long*/
     if (request.getDuration() > (long)TimeRange.WHOLE_DAY.duration()) {
         return Arrays.asList();
     }
 
-    TimeRange earliestTime = TimeRange.fromStartEnd(1440, 1440, false);
-    TimeRange latestTime = TimeRange.fromStartEnd(0, 0, false);
-    TimeRange useToCompare = TimeRange.fromStartEnd(69, 420, false);
-
-    for(Event event : events) {
-        if (useToCompare.ORDER_BY_START.compare(event.getWhen(), earliestTime) < 0)
-            earliestTime = event.getWhen();
-        if (useToCompare.ORDER_BY_START.compare(event.getWhen(), latestTime) > 0)
-            latestTime = event.getWhen();
+    /*Edge Case, there are no events*/
+    if (events.isEmpty() || events == null) {
+        return Arrays.asList(TimeRange.WHOLE_DAY);
     }
 
-    System.err.println("Earliest Time is from "+earliestTime.start()+" to "+
-    earliestTime.end());
-    System.err.println("Latest Time is from "+latestTime.start()+" to "+
-    earliestTime.end());
-    
+    List<TimeRange> invalidTimes = new ArrayList<>();
+    List<TimeRange> validTimes = new ArrayList<>();
+    TimeRange proposedTime;
 
-    return Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, earliestTime.start(), false),
-    TimeRange.fromStartEnd(latestTime.end(), TimeRange.END_OF_DAY, true));
+    for (Event event: events) {
+        /*If no one from the event is going, then none of the times 
+        disrupt us */
+        if(checkAttendance(event, request))
+            invalidTimes = fixOverlaps(invalidTimes, event.getWhen());
+    }
+    
+    if (invalidTimes.isEmpty() || invalidTimes == null){
+        validTimes.add(TimeRange.WHOLE_DAY);
+        return validTimes;
+    }
+
+    /*Proper implementation, goes from time slot to time slot, 
+    adding them to the list as we go. Does not make any assumptions 
+    about where the invalid time slots are, aside from them being sorted*/
+    int currentStamp = TimeRange.START_OF_DAY;
+
+    for (TimeRange currentTime: invalidTimes) {
+        //If the beginning of the day is an invalid time slot 
+        if (currentStamp == currentTime.start())
+            currentStamp = currentTime.end();
+        else {
+            proposedTime = TimeRange.fromStartEnd(currentStamp, 
+            currentTime.start(), false);
+
+            /*Checks if the proposed time slot is big enough to fit 
+            the event request time*/
+            if (proposedTime.duration() >= request.getDuration())
+                validTimes.add(proposedTime);
+
+            currentStamp = currentTime.end();
+        }
+        if (currentStamp == TimeRange.END_OF_DAY + 1)
+            break;
+    }
+
+    /*If we havent reached the end of the day, then we have a whole
+    free slot at the end */
+    if (currentStamp != TimeRange.END_OF_DAY) {
+        proposedTime = TimeRange.fromStartEnd(currentStamp, 
+        TimeRange.END_OF_DAY + 1, false);
+
+        if (proposedTime.duration() >= request.getDuration())
+            validTimes.add(proposedTime);
+    }
+
+    return validTimes;
+  }
+
+  /* Adds a new invalid time to the list, but first checks if there's any overlaps.
+   * If so, the function accomodates to the overlap. 
+   * @param times a List containing all the invalid TimeRanges
+   * @param newTime the new invalid time we are trying to add to the list
+   * @return the new list with the added invalid time
+   */
+  private List<TimeRange> fixOverlaps(List<TimeRange> times, TimeRange newTime) {
+      if (times.isEmpty() || times == null) {
+          times.add(newTime);
+          return times;
+      }
+
+      for(TimeRange currentTime: times) {
+          /*We already have an invalid time larger than the 
+          one we are tryng to add */
+          if (currentTime.contains(newTime)) 
+            return times;
+        
+          /*The time we are tryng to add is larger than a time 
+          we already have */
+          if (newTime.contains(currentTime)) {
+              times.remove(currentTime);
+              times.add(newTime);
+              return times;
+          }
+        
+          /*The worst scenario, the time we are trying to add merely overlaps 
+          another time we have*/
+          if (currentTime.overlaps(newTime)) {
+              TimeRange newEnd = (currentTime.ORDER_BY_END.compare(currentTime, newTime) > 0) ? currentTime : newTime;
+              TimeRange newStart = (currentTime.ORDER_BY_START.compare(newTime, currentTime) > 0) ? currentTime : newTime;
+              TimeRange combinedTime = TimeRange.fromStartEnd(newStart.start(), newEnd.end(), false);
+              times.add(combinedTime);
+              times.remove(currentTime);
+              return times;
+          }
+      }
+      times.add(newTime);
+      return times;
+  }
+
+  /*Checks if at least one person is attending
+   * @param event the event that could potentially disrupt the meeting time
+   * @param request the meeting request
+   * @return true if at least one person from the event is going to the meeting
+   * false otherwise
+   */
+  private Boolean checkAttendance(Event event, MeetingRequest request) {
+      for (String person : event.getAttendees()) {
+          if (request.getAttendees().contains(person))
+            return true;
+      }
+      return false;
   }
 }
